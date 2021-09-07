@@ -54,4 +54,10 @@ export class MoviesService {
   getMovies() : Movie[]{
     return this.movies;
   }
+
+  getMovieById(id: number){
+    return this.movies.find(movie => {
+      return movie.id === id;
+    });
+  }
 }
