@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Movie} from "../models/movie";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MoviesService {
+
+  URL = 'https://angularcoursebackend.azurewebsites.net/api/movies';
+
   private movies: Movie[] = [
 
     {
@@ -49,15 +54,18 @@ export class MoviesService {
     },
   ];
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
-  getMovies() : Movie[]{
-    return this.movies;
+  getMovies() : Observable<Movie[]>{
+    return this.httpClient.get<Movie[]>(this.URL);
   }
 
-  getMovieById(id: number){
-    return this.movies.find(movie => {
-      return movie.id === id;
-    });
+  //with empty constructor:
+  // getMovies() : Movie[]{
+  //   return this.movies;
+  // }
+
+  getMovieById(id: number): Observable<Movie> {
+    return this.httpClient.get<Movie>(this.URL + '/' + id);
   }
 }
